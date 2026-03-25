@@ -1,0 +1,87 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  color-scheme: light;
+  --portfolio-bg: #f4f4f2;
+  --portfolio-ink: #111111;
+  --portfolio-grid: rgba(0, 0, 0, 0.06);
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  width: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.9), transparent 28%),
+    radial-gradient(circle at top right, rgba(0, 0, 0, 0.035), transparent 24%),
+    linear-gradient(180deg, #fafafa 0%, #f4f4f2 100%);
+  color: var(--portfolio-ink);
+  font-family: 'Inter', sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to right, var(--portfolio-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--portfolio-grid) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-position: 0 0, 0 0;
+  opacity: 0.4;
+  mask-image: radial-gradient(circle at center, black, transparent 85%);
+  -webkit-mask-image: radial-gradient(circle at center, black, transparent 85%);
+  will-change: background-position, opacity;
+  animation: toolGridDrift 10s linear infinite;
+}
+
+@keyframes toolGridDrift {
+  0% {
+    background-position: 0 0, 0 0;
+    opacity: 0.34;
+  }
+
+  50% {
+    background-position: 0 11px, 0 11px;
+    opacity: 0.44;
+  }
+
+  100% {
+    background-position: 0 22px, 0 22px;
+    opacity: 0.34;
+  }
+}
+
+#root {
+  min-height: 100svh;
+  position: relative;
+  isolation: isolate;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+::selection {
+  background: #d8d8d8;
+  color: #111111;
+}
