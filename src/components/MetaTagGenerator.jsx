@@ -116,26 +116,6 @@ const styles = `
     50% { transform: translateY(-20px) scale(1.05); }
     100% { transform: translateY(0px) scale(1); }
   }
-
-  .data-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 16px;
-    border-radius: 12px;
-    transition: all 0.3s ease;
-    border-bottom: 1px solid rgba(229, 231, 235, 0.5);
-  }
-
-  .data-row:last-child {
-    border-bottom: none;
-  }
-
-  .data-row:hover {
-    background: rgba(17, 17, 17, 0.04);
-    transform: translateX(4px);
-  }
 `
 
 const MAX_TITLE = 60
@@ -214,6 +194,29 @@ const MetaTagGenerator = ({ embedded = false }) => {
     description: form.description.length,
   }
 
+  const previewStats = [
+    {
+      label: 'Title',
+      value: `${counts.title}/${MAX_TITLE}`,
+      valueClass: counts.title > MAX_TITLE ? 'text-red-500' : 'text-gray-900',
+    },
+    {
+      label: 'Description',
+      value: `${counts.description}/${MAX_DESCRIPTION}`,
+      valueClass: counts.description > MAX_DESCRIPTION ? 'text-red-500' : 'text-gray-900',
+    },
+    {
+      label: 'Robots',
+      value: robots,
+      valueClass: 'text-gray-900',
+    },
+    {
+      label: 'Social',
+      value: 'OG + Twitter',
+      valueClass: 'text-gray-900',
+    },
+  ]
+
   const updateField = (key, value) => {
     setForm((current) => ({ ...current, [key]: value }))
   }
@@ -233,8 +236,8 @@ const MetaTagGenerator = ({ embedded = false }) => {
   }
 
   const wrapperClasses = embedded
-    ? 'w-full max-w-6xl mx-auto flex flex-col justify-center px-2 sm:px-4 py-2 relative overflow-hidden'
-    : 'w-full max-w-6xl mx-auto flex flex-col justify-center px-4 sm:px-6 pt-24 pb-20 relative overflow-hidden'
+    ? 'relative mx-auto flex h-full w-full max-w-7xl flex-col justify-center overflow-hidden px-2 py-2 sm:px-3'
+    : 'relative mx-auto flex w-full max-w-7xl flex-col justify-center overflow-hidden px-4 pb-16 pt-20 sm:px-6'
 
   return (
     <div className={wrapperClasses}>
@@ -243,10 +246,10 @@ const MetaTagGenerator = ({ embedded = false }) => {
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-black/6 blur-[120px] -z-10 pointer-events-none animate-float"></div>
       <div className="absolute top-1/2 right-1/4 -translate-y-1/2 h-[400px] w-[400px] rounded-full bg-black/4 blur-[100px] -z-10 pointer-events-none animate-float-delayed"></div>
 
-      <div className="clean-card grid grid-cols-1 gap-8 p-6 sm:p-8 xl:grid-cols-[1.05fr_0.95fr]">
-        <div className="grid gap-5">
-          <div className="grid gap-3 md:grid-cols-2">
-            <div className="space-y-2 md:col-span-2">
+      <div className="clean-card grid grid-cols-1 gap-4 p-4 sm:p-5 xl:h-full xl:min-h-0 xl:grid-cols-[minmax(0,1.08fr)_minmax(360px,0.92fr)]">
+        <div className="grid gap-4 xl:min-h-0 xl:overflow-auto xl:pr-1">
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-12">
+            <div className="space-y-1.5 md:col-span-2 xl:col-span-12">
               <div className="flex items-center justify-between gap-3">
                 <label className="text-sm font-medium text-gray-700">Site Title</label>
                 <span className={`text-xs ${counts.title > MAX_TITLE ? 'text-red-500' : 'text-gray-400'}`}>
@@ -257,12 +260,12 @@ const MetaTagGenerator = ({ embedded = false }) => {
                 type="text"
                 value={form.title}
                 onChange={(event) => updateField('title', event.target.value)}
-                className="clean-input w-full rounded-xl p-4 text-base text-gray-900 placeholder:text-gray-400"
+                className="clean-input w-full rounded-xl p-3.5 text-sm text-gray-900 placeholder:text-gray-400"
                 placeholder="Enter page title"
               />
             </div>
 
-            <div className="space-y-2 md:col-span-2">
+            <div className="space-y-1.5 md:col-span-2 xl:col-span-12">
               <div className="flex items-center justify-between gap-3">
                 <label className="text-sm font-medium text-gray-700">Description</label>
                 <span className={`text-xs ${counts.description > MAX_DESCRIPTION ? 'text-red-500' : 'text-gray-400'}`}>
@@ -272,69 +275,69 @@ const MetaTagGenerator = ({ embedded = false }) => {
               <textarea
                 value={form.description}
                 onChange={(event) => updateField('description', event.target.value)}
-                className="clean-input min-h-[120px] w-full rounded-xl p-4 text-base text-gray-900 placeholder:text-gray-400 resize-none"
+                className="clean-input min-h-[96px] w-full rounded-xl p-3.5 text-sm text-gray-900 placeholder:text-gray-400 resize-none xl:min-h-[82px]"
                 placeholder="Write a short SEO description"
               />
             </div>
 
-            <div className="space-y-2 md:col-span-2">
+            <div className="space-y-1.5 md:col-span-2 xl:col-span-6">
               <label className="text-sm font-medium text-gray-700">Keywords</label>
               <input
                 type="text"
                 value={form.keywords}
                 onChange={(event) => updateField('keywords', event.target.value)}
-                className="clean-input w-full rounded-xl p-4 text-base text-gray-900 placeholder:text-gray-400"
+                className="clean-input w-full rounded-xl p-3.5 text-sm text-gray-900 placeholder:text-gray-400"
                 placeholder="seo, tags, metadata"
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1.5 xl:col-span-3">
               <label className="text-sm font-medium text-gray-700">Author Name</label>
               <input
                 type="text"
                 value={form.author}
                 onChange={(event) => updateField('author', event.target.value)}
-                className="clean-input w-full rounded-xl p-4 text-base text-gray-900 placeholder:text-gray-400"
+                className="clean-input w-full rounded-xl p-3.5 text-sm text-gray-900 placeholder:text-gray-400"
                 placeholder="Optional author"
               />
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">Canonical URL</label>
-              <input
-                type="url"
-                value={form.canonicalUrl}
-                onChange={(event) => updateField('canonicalUrl', event.target.value)}
-                className="clean-input w-full rounded-xl p-4 text-base text-gray-900 placeholder:text-gray-400"
-                placeholder="https://example.com"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">Open Graph Image</label>
-              <input
-                type="url"
-                value={form.ogImage}
-                onChange={(event) => updateField('ogImage', event.target.value)}
-                className="clean-input w-full rounded-xl p-4 text-base text-gray-900 placeholder:text-gray-400"
-                placeholder="https://example.com/og-image.jpg"
-              />
-            </div>
-
-            <div className="space-y-2">
+            <div className="space-y-1.5 xl:col-span-3">
               <label className="text-sm font-medium text-gray-700">Twitter Handle</label>
               <input
                 type="text"
                 value={form.twitterHandle}
                 onChange={(event) => updateField('twitterHandle', event.target.value)}
-                className="clean-input w-full rounded-xl p-4 text-base text-gray-900 placeholder:text-gray-400"
+                className="clean-input w-full rounded-xl p-3.5 text-sm text-gray-900 placeholder:text-gray-400"
                 placeholder="@yourhandle"
+              />
+            </div>
+
+            <div className="space-y-1.5 xl:col-span-6">
+              <label className="text-sm font-medium text-gray-700">Canonical URL</label>
+              <input
+                type="url"
+                value={form.canonicalUrl}
+                onChange={(event) => updateField('canonicalUrl', event.target.value)}
+                className="clean-input w-full rounded-xl p-3.5 text-sm text-gray-900 placeholder:text-gray-400"
+                placeholder="https://example.com"
+              />
+            </div>
+
+            <div className="space-y-1.5 xl:col-span-6">
+              <label className="text-sm font-medium text-gray-700">Open Graph Image</label>
+              <input
+                type="url"
+                value={form.ogImage}
+                onChange={(event) => updateField('ogImage', event.target.value)}
+                className="clean-input w-full rounded-xl p-3.5 text-sm text-gray-900 placeholder:text-gray-400"
+                placeholder="https://example.com/og-image.jpg"
               />
             </div>
           </div>
 
-          <div className="grid gap-4 rounded-[24px] border border-[rgba(17,17,17,0.08)] bg-[rgba(255,255,255,0.45)] p-4 md:grid-cols-3">
-            <div className="space-y-2">
+          <div className="grid gap-3 rounded-[20px] border border-[rgba(17,17,17,0.08)] bg-[rgba(255,255,255,0.45)] p-3.5 md:grid-cols-3">
+            <div className="space-y-1.5">
               <label className="text-sm font-medium text-gray-700">Index Setting</label>
               <div className="grid grid-cols-2 gap-2">
                 {['index', 'noindex'].map((value) => (
@@ -342,7 +345,7 @@ const MetaTagGenerator = ({ embedded = false }) => {
                     key={value}
                     type="button"
                     onClick={() => updateField('robotsIndex', value)}
-                    className={`toggle-pill rounded-xl px-3 py-3 text-sm font-medium ${form.robotsIndex === value ? 'active' : 'text-gray-600'}`}
+                    className={`toggle-pill rounded-xl px-3 py-2.5 text-xs font-semibold uppercase tracking-[0.12em] ${form.robotsIndex === value ? 'active' : 'text-gray-600'}`}
                   >
                     {value}
                   </button>
@@ -350,7 +353,7 @@ const MetaTagGenerator = ({ embedded = false }) => {
               </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               <label className="text-sm font-medium text-gray-700">Follow Setting</label>
               <div className="grid grid-cols-2 gap-2">
                 {['follow', 'nofollow'].map((value) => (
@@ -358,7 +361,7 @@ const MetaTagGenerator = ({ embedded = false }) => {
                     key={value}
                     type="button"
                     onClick={() => updateField('robotsFollow', value)}
-                    className={`toggle-pill rounded-xl px-3 py-3 text-sm font-medium ${form.robotsFollow === value ? 'active' : 'text-gray-600'}`}
+                    className={`toggle-pill rounded-xl px-3 py-2.5 text-xs font-semibold uppercase tracking-[0.12em] ${form.robotsFollow === value ? 'active' : 'text-gray-600'}`}
                   >
                     {value}
                   </button>
@@ -366,12 +369,12 @@ const MetaTagGenerator = ({ embedded = false }) => {
               </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               <label className="text-sm font-medium text-gray-700">Twitter Card</label>
               <select
                 value={form.twitterCard}
                 onChange={(event) => updateField('twitterCard', event.target.value)}
-                className="clean-input w-full rounded-xl p-4 text-base text-gray-900"
+                className="clean-input w-full rounded-xl p-3.5 text-sm text-gray-900"
               >
                 <option value="summary">summary</option>
                 <option value="summary_large_image">summary_large_image</option>
@@ -380,20 +383,20 @@ const MetaTagGenerator = ({ embedded = false }) => {
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <button type="button" onClick={copyAll} className="clean-button rounded-xl px-5 py-3 text-sm font-semibold">
+            <button type="button" onClick={copyAll} className="clean-button rounded-xl px-4 py-3 text-sm font-semibold">
               {copied ? 'Copied Meta Tags' : 'Copy to Clipboard'}
             </button>
-            <button type="button" onClick={resetForm} className="muted-button rounded-xl px-5 py-3 text-sm font-semibold">
+            <button type="button" onClick={resetForm} className="muted-button rounded-xl px-4 py-3 text-sm font-semibold">
               Reset Fields
             </button>
           </div>
         </div>
 
-        <div className="flex flex-col gap-5">
-          <div className="rounded-[24px] border border-[rgba(17,17,17,0.12)] bg-[rgba(255,255,255,0.58)] p-5">
+        <div className="flex min-h-0 flex-col">
+          <div className="flex min-h-0 flex-1 flex-col rounded-[24px] border border-[rgba(17,17,17,0.12)] bg-[rgba(255,255,255,0.58)] p-4 sm:p-5">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <h2 className="font-brand text-[1.35rem] font-semibold tracking-[-0.05em] text-slate-950">Live Meta Preview</h2>
+                <h2 className="font-brand text-[1.2rem] font-semibold tracking-[-0.05em] text-slate-950 sm:text-[1.3rem]">Live Meta Preview</h2>
                 <p className="mt-1 text-sm text-gray-500">Copy-ready HTML for your &lt;head&gt; section.</p>
               </div>
               <span className="rounded-full bg-[rgba(17,17,17,0.05)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-gray-600">
@@ -401,34 +404,21 @@ const MetaTagGenerator = ({ embedded = false }) => {
               </span>
             </div>
 
-            <pre className="mt-4 overflow-x-auto rounded-[20px] bg-[#111111] p-5 text-sm leading-7 text-white">
+            <div className="mt-4 grid gap-2 sm:grid-cols-2">
+              {previewStats.map((item) => (
+                <div
+                  key={item.label}
+                  className="rounded-2xl border border-[rgba(17,17,17,0.08)] bg-white/70 px-3 py-2.5"
+                >
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-500">{item.label}</p>
+                  <p className={`mt-1 text-sm font-semibold ${item.valueClass}`}>{item.value}</p>
+                </div>
+              ))}
+            </div>
+
+            <pre className="mt-4 flex-1 overflow-auto rounded-[18px] bg-[#111111] p-4 text-[13px] leading-6 text-white xl:min-h-0">
               <code>{metaTags}</code>
             </pre>
-          </div>
-
-          <div className="rounded-[24px] border border-[rgba(17,17,17,0.12)] bg-[rgba(255,255,255,0.58)] p-5">
-            <div className="space-y-1">
-              <div className="data-row">
-                <span className="text-sm text-gray-500">Title Length</span>
-                <span className={`text-sm font-semibold ${counts.title > MAX_TITLE ? 'text-red-500' : 'text-gray-900'}`}>
-                  {counts.title} chars
-                </span>
-              </div>
-              <div className="data-row">
-                <span className="text-sm text-gray-500">Description Length</span>
-                <span className={`text-sm font-semibold ${counts.description > MAX_DESCRIPTION ? 'text-red-500' : 'text-gray-900'}`}>
-                  {counts.description} chars
-                </span>
-              </div>
-              <div className="data-row">
-                <span className="text-sm text-gray-500">Robots Rule</span>
-                <span className="text-sm font-semibold text-gray-900">{robots}</span>
-              </div>
-              <div className="data-row">
-                <span className="text-sm text-gray-500">OG + Twitter</span>
-                <span className="text-sm font-semibold text-gray-900">Included</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
